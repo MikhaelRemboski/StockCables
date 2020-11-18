@@ -5,33 +5,23 @@
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
   <servlet>
-  	<servlet-name>LoginController</servlet-name>
-  	<display-name>LoginController</display-name>
-  	<description></description>
-  	<servlet-class>com.cablesfb.controller.LoginController</servlet-class>
-  </servlet>
-  <servlet>
   	<servlet-name>ControllerLogin</servlet-name>
   	<display-name>ControllerLogin</display-name>
   	<description></description>
   	<servlet-class>com.cablesfb.controller.ControllerLogin</servlet-class>
   </servlet>
   <servlet>
-  	<servlet-name>Juan</servlet-name>
-  	<display-name>Juan</display-name>
+  	<servlet-name>Aasd</servlet-name>
+  	<display-name>Aasd</display-name>
   	<description></description>
-  	<servlet-class>com.cablesfb.controller.Juan</servlet-class>
+  	<servlet-class>com.cablesfb.controller.Aasd</servlet-class>
   </servlet>
-  <servlet-mapping>
-  	<servlet-name>LoginController</servlet-name>
-  	<url-pattern>/LoginController</url-pattern>
-  </servlet-mapping>
   <servlet-mapping>
   	<servlet-name>ControllerLogin</servlet-name>
   	<url-pattern>/ControllerLogin</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-  	<servlet-name>Juan</servlet-name>
-  	<url-pattern>/Juan</url-pattern>
+  	<servlet-name>Aasd</servlet-name>
+  	<url-pattern>/Aasd</url-pattern>
   </servlet-mapping>
 </web-app>

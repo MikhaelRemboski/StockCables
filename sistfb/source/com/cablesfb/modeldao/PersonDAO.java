@@ -15,7 +15,7 @@ public class PersonDAO  implements Validate{
 			int r = 0;
 			Connection con;
 			Connector cn = new Connector();
-			con = cn.getConnection();
+			con = cn.getLoginConnection();
 			PreparedStatement ps;
 			ResultSet rs;
 			String sql = "SELECT `contraseña`,`correo` FROM `usuario` WHERE correo = ? AND contraseña = ?";
@@ -24,6 +24,7 @@ public class PersonDAO  implements Validate{
 			ps.setString(1, per.getEmail());
 			ps.setString(2, per.getPassword());
 			rs = ps.executeQuery();
+
 			
 			while(rs.next()) {
 				r=r+1;
@@ -35,7 +36,6 @@ public class PersonDAO  implements Validate{
 			}else {
 				return 0;
 			}
-			
 		} catch (Exception ex) {
 			System.out.println(ex.getMessage());
 			System.out.println("error de validacion");

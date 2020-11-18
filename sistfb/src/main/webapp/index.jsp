@@ -22,7 +22,7 @@
 		</md-toolbar>
 		<div layout-padding="">
 			<div></div>
-			<form name="userForm" method="POST" action="logincontroller" ng-submit="user.submit(userForm.$valid)" >
+			<form name="userForm" method="POST" action="logued" ng-submit="user.submit(userForm.$valid)" >
 				<input type="hidden" name="action" value="login" />
 				<div layout="row" layout-sm="column">
 					<md-input-container flex-gt-sm="">

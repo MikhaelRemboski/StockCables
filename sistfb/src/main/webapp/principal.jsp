@@ -19,9 +19,10 @@
 </head>
 <body>
 	<%
-		if (request.getSession().getAttribute("email") == null && request.getSession().getAttribute("name") == null) {
-		out.print("<script>location.replace('/sistfb/login/index.jsp');</script>");
-	}
+		
+	
+	if (request.getSession().getAttribute("email") == null && request.getSession().getAttribute("name") == null) {
+		out.print("<script>location.replace('/sistfb/index.jsp');</script>");}
 	%>
 
 
@@ -90,7 +91,7 @@
 						<a class="dropdown-item"> <%=request.getSession().getAttribute("name")%></a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item"
-							href="/sistfb/login/index.jsp?<%request.getSession().invalidate();%>">Cerrar
+							href="/index.jsp?<%request.getSession().invalidate();%>">Cerrar
 							Sesion</a>
 					</div></li>
 			</ul>

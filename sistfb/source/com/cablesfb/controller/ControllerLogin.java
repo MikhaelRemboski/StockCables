@@ -13,7 +13,7 @@ import com.cablesfb.modeldao.PersonDAO;
 /**
  * Servlet implementation class ControllerLogin
  */
-@WebServlet("/login/logincontroller")
+@WebServlet("/logued")
 public class ControllerLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	PersonDAO pdao = new PersonDAO();
@@ -36,10 +36,11 @@ public class ControllerLogin extends HttpServlet {
 		if (r == 1) {
 			request.getSession().setAttribute("name", "perroraton");
 			request.getSession().setAttribute("email", email);
-			request.getRequestDispatcher("/principal/principal.jsp").forward(request, response);
+			request.getSession().setMaxInactiveInterval(0);
+			request.getRequestDispatcher("/principal.jsp").forward(request, response);
 
 		} else {
-			request.getRequestDispatcher("index.jsp").forward(request, response);
+			request.getRequestDispatcher("/index.jsp").forward(request, response);
 
 		}
 		System.out.println(email);

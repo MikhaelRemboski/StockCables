@@ -6,6 +6,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.cablesfb.model.Product;
+import com.cablesfb.modeldao.ProductDAO;
 @WebServlet("/stockadded")
 public class StockController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -32,9 +35,22 @@ public class StockController extends HttpServlet {
 			 price = Double.parseDouble(request.getParameter("price"));
 			 discountType = request.getParameter("discounttype");
 			 type = request.getParameter("type");
-
+			 Product p = new Product();
+			 ProductDAO pdao = new ProductDAO();
+			 p.setName(name);
+			 p.setDiscountType(discountType);
+			 p.setDisponibleMeters(0);
+			 p.setMetersByType(metersByType);
+			 p.setPrice(price);
+			 p.setSku(sku);
+			 p.setType(type);
+			 p.setUnitys(unitys);
+			 pdao.update(p);
+			 request.getSession().setAttribute("exito", "exito");
+			 request.getRequestDispatcher("/addproduct.jsp").forward(request, response);
 		} catch (Exception ex) {
-			response.getWriter().append("<h1>BOLUDO!!!!!! COMPLETA BIEN!!!! YA  TE EXPLIQUE COMO SE CARGAN LOS PRODUCTOS.<h1>");
+			response.getWriter().append("<h1>BOLUDO!!!!!! COMPLETA BIEN!!!! YA  TE EXPLIQUE COMO SE CARGAN LOS PRODUCTOS.<h1>"
+					+ "<a class=\"btn btn-primary\" href=\"../sistfb/addproduct.jsp\" role=\"button\">intentar de nuevo</a");
 			System.out.println(ex.getMessage());
 		}
 		

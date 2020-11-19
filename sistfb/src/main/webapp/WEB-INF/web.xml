@@ -14,6 +14,12 @@
   	<description></description>
   	<servlet-class>com.cablesfb.controller.StockController</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>SearcherController</servlet-name>
+  	<display-name>SearcherController</display-name>
+  	<description></description>
+  	<servlet-class>com.cablesfb.controller.SearcherController</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>ControllerLogin</servlet-name>
   	<url-pattern>/ControllerLogin</url-pattern>
@@ -21,5 +27,9 @@
   <servlet-mapping>
   	<servlet-name>StockController</servlet-name>
   	<url-pattern>/StockController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>SearcherController</servlet-name>
+  	<url-pattern>/SearcherController</url-pattern>
   </servlet-mapping>
 </web-app>

@@ -103,7 +103,7 @@
 	</nav>
 	<br>
 	<!--  tabla abajo -->
-	<table class="table">
+	<table class="table" id="testTable">
 		<thead class="thead-dark">
 			<tr>
 				<th scope="col">id</th>
@@ -190,7 +190,8 @@
 			%>
 			<%totalAllPrice = Rounder.roundByFourZeroes(totalAllPrice); %>
 				<tr>
-				<th scope="row"></th>
+				<th scope="row"><input type="button" onclick="tableToExcel('testTable', 'W3C Example Table')" value="Export to Excel">
+</button></th>
 				<td></td>
 				<td></td>
 				<td></td>
@@ -202,6 +203,7 @@
 				<td><%=totalAllPrice%> usd</td>
 				<td></td>
 				</tr>
+				
 		</tbody>
 	</table>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
@@ -215,5 +217,6 @@
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
 		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 		crossorigin="anonymous"></script>
+	<script src="tableToExcel.js"></script>
 </body>
 </html>

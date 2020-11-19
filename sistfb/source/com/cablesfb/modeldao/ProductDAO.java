@@ -28,6 +28,7 @@ public class ProductDAO {
 				p.setType(rs.getString("type"));
 				p.setMetersByType(rs.getDouble("metersbytype"));
 				p.setDisponibleMeters(rs.getDouble("disponiblemeters"));
+				p.setDiscountType(rs.getString("discounttype"));
 			}
 			return p;
 		} catch (Exception ex) {
@@ -55,27 +56,8 @@ public class ProductDAO {
 
 	}
 
-//	public static void main(String[] args) {
-//		try {
-//			ProductDAO pdao = new ProductDAO();
-//			Product p = new Product();
-//			ResultSet rs2 = pdao.searchAll();
-//			while (rs2.next()) {
-//
-//				p.setId(rs2.getInt("id"));
-//				p.setName(rs2.getString("name"));
-//				p.setPrice(rs2.getDouble("price"));
-//				p.setSku(rs2.getInt("sku"));
-//				p.setUnitys(rs2.getDouble("unitys"));
-//				p.setType(rs2.getString("type"));
-//				p.setMetersByType(rs2.getDouble("metersbytype"));
-//				p.setDisponibleMeters(rs2.getDouble("disponiblemeters"));
-//				
-//				System.out.println(p.getName());
-//			}
-//		} catch (Exception e) {
-//			System.out.println(e.getMessage());
-//		}
-//
-//	}
+	public String update (Product p) {
+		String resultado = "";
+		return resultado;
+	}
 }

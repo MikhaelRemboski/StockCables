@@ -8,8 +8,18 @@
   	<description></description>
   	<servlet-class>com.cablesfb.controller.ControllerLogin</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>StockController</servlet-name>
+  	<display-name>StockController</display-name>
+  	<description></description>
+  	<servlet-class>com.cablesfb.controller.StockController</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>ControllerLogin</servlet-name>
   	<url-pattern>/ControllerLogin</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>StockController</servlet-name>
+  	<url-pattern>/StockController</url-pattern>
   </servlet-mapping>
 </web-app>

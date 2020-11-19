@@ -1,4 +1,6 @@
 
+<%@page import="com.cablesfb.helper.Rounder"%>
+<%@page import="com.cablesfb.helper.Discounter"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="com.cablesfb.modeldao.ProductDAO"%>
 <%@page import="com.cablesfb.model.Product"%>
@@ -19,10 +21,11 @@
 </head>
 <body>
 	<%
-		
-	
-	if (request.getSession().getAttribute("email") == null && request.getSession().getAttribute("name") == null) {
-		out.print("<script>location.replace('/sistfb/index.jsp');</script>");}
+		System.out.println(session.getId() + "principal");
+	if (session.getAttribute("email") == null && session.getAttribute("name") == null) {
+		out.print("<script>location.replace('/sistfb/index.jsp');</script>");
+	}
+
 	%>
 
 
@@ -33,7 +36,7 @@
 
 	<!-- navbar abajo -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
-		<a class="navbar-brand" href="#">Inicio</a>
+		<a class="navbar-brand" href="../sistfb/principal.jsp">Inicio</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
 			data-target="#navbarSupportedContent"
 			aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -60,10 +63,10 @@
 					role="button" data-toggle="dropdown" aria-haspopup="true"
 					aria-expanded="false"> Control Stock </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="../inicio/stock.html">Ver Stock</a>
+						<a class="dropdown-item" href="../principal.jsp">Ver Stock</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item"
-							href="../control de stock/agregarproducto.html">Agregar
+							href="../sistfb/addproduct.jsp">Agregar
 							Producto</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="#">Recorte</a>
@@ -82,7 +85,7 @@
 			</form>
 			<ul class="navbar-nav mr-right">
 				<li class="nav-item dropdown"><a
-					class="nav-link dropdown-toggle" href="../inicio/stock.html"
+					class="nav-link dropdown-toggle" href="../sistfb/inicio/stock.html"
 					id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false"> Mi Cuenta </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -90,9 +93,9 @@
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item"> <%=request.getSession().getAttribute("name")%></a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item"
-							href="/index.jsp?<%request.getSession().invalidate();%>">Cerrar
-							Sesion</a>
+						<form action="logued" method="POST">
+						<button type="submit" class="btn btn-link" name="close" value="close">cerrar sesion</button>
+						</form>
 					</div></li>
 			</ul>
 		</div>
@@ -123,6 +126,15 @@
 				Product p = new Product();
 			ProductDAO pdao = new ProductDAO();
 			ResultSet rs2 = pdao.searchAll();
+			double price = 0;
+			String discountType = "";
+			
+			double totalMeters = 0;
+			double totalAllMeters = 0;
+			
+			double totalPrice = 0;
+			double totalAllPrice = 0;
+			
 			while (rs2.next()) {
 				p.setId(rs2.getInt("id"));
 				p.setName(rs2.getString("name"));
@@ -132,8 +144,21 @@
 				p.setType(rs2.getString("type"));
 				p.setMetersByType(rs2.getDouble("metersbytype"));
 				p.setDisponibleMeters(rs2.getDouble("disponiblemeters"));
-				Double totalMeters = p.getMetersByType() * p.getUnitys();
-				Double totalPrice = p.getPrice() * totalMeters;
+				p.setDiscountType(rs2.getString("discounttype"));
+				
+				price = p.getPrice();
+				discountType = p.getDiscountType();
+				price = Discounter.discount(discountType, price);
+				
+				
+				totalMeters = p.getMetersByType() * p.getUnitys();
+				totalAllMeters += totalMeters;
+				
+				totalPrice = price * totalMeters;
+				totalPrice = Rounder.roundByFourZeroes(totalPrice);
+				totalAllPrice += totalPrice;
+				
+				
 			%>
 			<tr>
 				<th scope="row"><%=p.getId()%></th>
@@ -144,8 +169,8 @@
 				<td><%=p.getUnitys()%></td>
 				<td><%=totalMeters%> mts</td>
 				<td>Not Working yet</td>
-				<td><%=p.getPrice()%></td>
-				<td><%=totalPrice%></td>
+				<td><%=price%> usd</td>
+				<td><%=totalPrice%> usd</td>
 				<td>
 					<ul class="navbar-nav mr-auto">
 						<li class="nav-item dropdown"><a
@@ -163,6 +188,20 @@
 			<%
 				}
 			%>
+			<%totalAllPrice = Rounder.roundByFourZeroes(totalAllPrice); %>
+				<tr>
+				<th scope="row"></th>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td><strong>TOTAL: </strong></td>
+				<td><%=totalAllMeters%> mts</td>
+				<td></td>
+				<td><strong>TOTAL: </strong></td>
+				<td><%=totalAllPrice%> usd</td>
+				<td></td>
+				</tr>
 		</tbody>
 	</table>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"

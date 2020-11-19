@@ -9,7 +9,8 @@ public class Product {
 	private double disponibleMeters;
 	private double price;
 	private int sku;
-
+	private String discountType;
+	
 	public Product() {
 	}
 
@@ -76,4 +77,13 @@ public class Product {
 	public void setSku(int sku) {
 		this.sku = sku;
 	}
+
+	public String getDiscountType() {
+		return discountType;
+	}
+
+	public void setDiscountType(String discountType) {
+		this.discountType = discountType;
+	}
+	
 }

@@ -25,7 +25,7 @@ public class PersonDAO  implements Validate{
 			ps.setString(2, per.getPassword());
 			rs = ps.executeQuery();
 
-			
+
 			while(rs.next()) {
 				r=r+1;
 				per.setEmail(rs.getString("correo"));

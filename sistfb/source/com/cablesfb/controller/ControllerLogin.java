@@ -44,7 +44,7 @@ public class ControllerLogin extends HttpServlet {
 			System.out.println(session.getId()+ "controller login");
 		} else {
 			request.getRequestDispatcher("/index.jsp").forward(request, response);
-
+			
 		}
 
 		String close = request.getParameter("close");

@@ -1,4 +1,3 @@
-
 <%@page import="com.cablesfb.helper.Rounder"%>
 <%@page import="com.cablesfb.helper.Discounter"%>
 <%@page import="java.sql.ResultSet"%>
@@ -7,17 +6,15 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page session="true"%>
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
 	crossorigin="anonymous">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Document</title>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
 </head>
 <body>
 	<%
@@ -26,7 +23,6 @@
 		out.print("<script>location.replace('/sistfb/index.jsp');</script>");
 	}
 	%>
-
 
 
 
@@ -99,122 +95,106 @@
 	</nav>
 	<br>
 	<!--  tabla abajo -->
-	<table class="table" id="testTable">
-		<thead class="thead-dark">
-			<tr>
-				<th scope="col">id</th>
-				<th scope="col">sku</th>
-				<th scope="col">nombre</th>
-				<th scope="col">tipo</th>
-				<th scope="col">metros por tipo</th>
-				<th scope="col">Unidades</th>
-				<th scope="col">metros totales</th>
-				<th scope="col">metros totales disp</th>
-				<th scope="col">Precio por metro</th>
-				<th scope="col">Precio total</th>
-				<th scope="col">Accion</th>
-			</tr>
-		</thead>
-		<tbody>
+	<form method="GET" action="trim">
+		<table class="table" id="testTable">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">Seleccionar</th>
+					<th scope="col">sku</th>
+					<th scope="col">nombre</th>
+					<th scope="col">tipo</th>
+					<th scope="col">metros por tipo</th>
+					<th scope="col">Unidades</th>
+					<th scope="col">metros totales</th>
+					<th scope="col">metros totales disp</th>
+					<th scope="col">Precio por metro</th>
+					<th scope="col">Precio total</th>
+				</tr>
+			</thead>
+			<tbody>
 
 
-			<%
-				Product p = new Product();
-			ProductDAO pdao = new ProductDAO();
-			ResultSet rs2 = pdao.searchAll();
-			double price = 0;
-			String discountType = "";
+				<%
+					Product p = new Product();
+				ProductDAO pdao = new ProductDAO();
+				ResultSet rs2 = pdao.searchAll();
+				double price = 0;
+				String discountType = "";
 
-			double totalMeters = 0;
-			double totalAllMeters = 0;
+				double totalMeters = 0;
+				double totalAllMeters = 0;
 
-			double totalPrice = 0;
-			double totalAllPrice = 0;
+				double totalPrice = 0;
+				double totalAllPrice = 0;
 
-			while (rs2.next()) {
-				p.setId(rs2.getInt("id"));
-				p.setName(rs2.getString("name"));
-				p.setPrice(rs2.getDouble("price"));
-				p.setSku(rs2.getInt("sku"));
-				p.setUnitys(rs2.getDouble("unitys"));
-				p.setType(rs2.getString("type"));
-				p.setMetersByType(rs2.getDouble("metersbytype"));
-				p.setDisponibleMeters(rs2.getDouble("disponiblemeters"));
-				p.setDiscountType(rs2.getString("discounttype"));
+				while (rs2.next()) {
+					p.setId(rs2.getInt("id"));
+					p.setName(rs2.getString("name"));
+					p.setPrice(rs2.getDouble("price"));
+					p.setSku(rs2.getInt("sku"));
+					p.setUnitys(rs2.getDouble("unitys"));
+					p.setType(rs2.getString("type"));
+					p.setMetersByType(rs2.getDouble("metersbytype"));
+					p.setDisponibleMeters(rs2.getDouble("disponiblemeters"));
+					p.setDiscountType(rs2.getString("discounttype"));
 
-				price = p.getPrice();
-				discountType = p.getDiscountType();
-				price = Discounter.discount(discountType, price);
+					price = p.getPrice();
+					discountType = p.getDiscountType();
+					price = Discounter.discount(discountType, price);
 
-				totalMeters = p.getMetersByType() * p.getUnitys();
-				totalAllMeters += totalMeters;
+					totalMeters = p.getMetersByType() * p.getUnitys();
+					totalAllMeters += totalMeters;
 
-				totalPrice = price * totalMeters;
-				totalPrice = Rounder.roundByFourZeroes(totalPrice);
-				totalAllPrice += totalPrice;
-			%>
-			<tr>
-				<th scope="row"><%=p.getId()%></th>
-				<td><%=p.getSku()%></td>
-				<td><%=p.getName()%></td>
-				<td><%=p.getType()%></td>
-				<td><%=p.getMetersByType()%> mts</td>
-				<td><%=p.getUnitys()%></td>
-				<td><%=totalMeters%> mts</td>
-				<td>Not Working yet</td>
-				<td><%=price%> usd</td>
-				<td><%=totalPrice%> usd</td>
-				<td>
-					<ul class="navbar-nav mr-auto">
-						<li class="nav-item dropdown"><a
-							class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-							role="button" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false"> Opciones </a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<form action="stockmodify" method="POST">
-									<div class="form-check">
-										<input class="form-check-input" type="radio" name="modify"
-											id="inlineRadio1" value=<%="delete"+p.getId()%>> <label
-											class="form-check-label" for="inlineRadio1">Eliminar</label>
-									</div>
-									<div class="form-check">
-										<input class="form-check-input" type="radio" name="modify"
-											id="inlineRadio2" value=<%="productmodify"+p.getId()%>> <label
-											class="form-check-label" for="inlineRadio2">Modificar producto</label>
-									</div>
-									<div class="col-auto my-1">
-										<button type="submit" class="btn btn-primary">Aceptar</button>
-									</div>
-								</form>
-							</div></li>
-					</ul>
-				</td>
-			</tr>
-			<%
-				}
-			%>
-			<%
-				totalAllPrice = Rounder.roundByFourZeroes(totalAllPrice);
-			%>
-			<tr>
-				<th scope="row"></th>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td><strong>TOTAL: </strong></td>
-				<td><%=totalAllMeters%> mts</td>
-				<td></td>
-				<td><strong>TOTAL: </strong></td>
-				<td><%=totalAllPrice%> usd</td>
-				<td><input type="button"
-					onclick="tableToExcel('testTable', 'W3C Example Table')"
-					value="Exportar a Excel">
-				</td>
-			</tr>
+					totalPrice = price * totalMeters;
+					totalPrice = Rounder.roundByFourZeroes(totalPrice);
+					totalAllPrice += totalPrice;
+				%>
+				<tr>
+					<th scope="row">
+							<div class="form-check">
+								<input class="form-check-input" name="idRecorte" type="checkbox"
+									value=<%=p.getId()%> id="defaultCheck1">
+							</div>
+					</th>
 
-		</tbody>
-	</table>
+					<td><%=p.getSku()%></td>
+					<td><%=p.getName()%></td>
+					<td><%=p.getType()%></td>
+					<td><%=p.getMetersByType()%> mts</td>
+					<td><%=p.getUnitys()%></td>
+					<td><%=totalMeters%> mts</td>
+					<td>Not Working yet</td>
+					<td><%=price%> usd</td>
+					<td><%=totalPrice%> usd</td>
+				</tr>
+				<%
+					}
+				%>
+				<%
+					totalAllPrice = Rounder.roundByFourZeroes(totalAllPrice);
+				%>
+				<tr>
+					<th scope="row">
+
+						<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Recortar
+							Productos</button>
+
+					</th>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td><strong>TOTAL: </strong></td>
+					<td><%=totalAllMeters%> mts</td>
+					<td></td>
+					<td><strong>TOTAL: </strong></td>
+					<td><%=totalAllPrice%> usd</td>
+					
+				</tr>
+				
+			</tbody>
+		</table>
+	</form>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
 		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
 		crossorigin="anonymous"></script>

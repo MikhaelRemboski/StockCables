@@ -1,13 +1,9 @@
-
-<%@page import="com.cablesfb.helper.Rounder"%>
-<%@page import="com.cablesfb.helper.Discounter"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="com.cablesfb.modeldao.ProductDAO"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@page import="com.cablesfb.model.Product"%>
+<%@page import="com.cablesfb.modeldao.ProductDAO"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ page session="true"%>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -21,11 +17,21 @@
 </head>
 <body>
 	<%
-		System.out.println(session.getId() + "principal");
-	if (session.getAttribute("email") == null && session.getAttribute("name") == null) {
+		if (session.getAttribute("email") == null && session.getAttribute("name") == null) {
 		out.print("<script>location.replace('/sistfb/index.jsp');</script>");
 	}
+	List<Product> productL = new ArrayList<Product>();
+	productL = (List<Product>) session.getAttribute("productToTrim");
+	Product p1 = productL.get(0);
+	Product p2 = productL.get(1);
+	
+	String name1 = p1.getName();
+	String name2 = p2.getName();
+	
+	session.removeAttribute("productToTrim");
 	%>
+
+
 
 
 
@@ -65,7 +71,7 @@
 						<a class="dropdown-item" href="../sistfb/principal.jsp">Ver
 							Stock</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="../sistfb/addproduct.jsp">Agregar
+						<a class="dropdown-item" href="../sistfb/addproduct.jsp">Modificar
 							Producto</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="../sistfb/recorte.jsp">Recorte</a>
@@ -98,123 +104,79 @@
 
 	</nav>
 	<br>
-	<!--  tabla abajo -->
-	<table class="table" id="testTable">
-		<thead class="thead-dark">
-			<tr>
-				<th scope="col">id</th>
-				<th scope="col">sku</th>
-				<th scope="col">nombre</th>
-				<th scope="col">tipo</th>
-				<th scope="col">metros por tipo</th>
-				<th scope="col">Unidades</th>
-				<th scope="col">metros totales</th>
-				<th scope="col">metros totales disp</th>
-				<th scope="col">Precio por metro</th>
-				<th scope="col">Precio total</th>
-				<th scope="col">Accion</th>
-			</tr>
-		</thead>
-		<tbody>
+
+	<form action="trim" method="POST" name="trim" class="was-validated">
+		<div class="row">
+			<div class="col">
+				<label for="validationCustom01">Nombre del producto</label> <input
+					type="text" name="name1" class="form-control"
+					value=<%='"' + name1 + '"'%>>
+			</div>
+			<div class="col">
+				<label for="validationCustom01">Sku del producto</label> <input
+					type="text" name="sku1" class="form-control" value=<%=p1.getSku()%>>
+			</div>
+			<div class="col">
+				<label for="validationCustom01">Metros por tipo</label> <input
+					type="text" name="metersbytype1" class="form-control"
+					value=<%=p1.getMetersByType()%>>
+			</div>
+			<div class="col">
+				<label for="validationCustom01">Cantidad de unidades del
+					tipo</label> <input type="text" name="unitys1" class="form-control"
+					value=<%=p1.getUnitys()%>>
+			</div>
+			<div class="col">
+				<label for="validationCustom01">Tipo de producto </label> <input
+					type="text" name="type1" class="form-control"
+					value=<%=p1.getType()%>>
+			</div>
+			</div>
 
 
-			<%
-				Product p = new Product();
-			ProductDAO pdao = new ProductDAO();
-			ResultSet rs2 = pdao.searchAll();
-			double price = 0;
-			String discountType = "";
 
-			double totalMeters = 0;
-			double totalAllMeters = 0;
+			<div class="row">
+				<div class="col">
+					<label for="validationCustom01">Nombre del producto</label> <input
+						type="text" name="name2" class="form-control"
+						value=<%='"' + name2 + '"'%>>
+				</div>
+				<div class="col">
+					<label for="validationCustom01">Sku del producto</label> <input
+						type="text" name="sku2" class="form-control" value=<%=p2.getSku()%>>
+				</div>
+				<div class="col">
+					<label for="validationCustom01">Metros por tipo</label> <input
+						type="text" name="metersbytype2" class="form-control"
+						value=<%=p2.getMetersByType()%>>
+				</div>
+				<div class="col">
+					<label for="validationCustom01">Cantidad de unidades del
+						tipo</label> <input type="text" name="unitys2" class="form-control"
+						value=<%=p2.getUnitys()%>>
+				</div>
+				<div class="col">
+					<label for="validationCustom01">Tipo de producto </label> <input
+						type="text" name="type2" class="form-control"
+						value=<%=p2.getType()%>>
+				</div>
+				</div>
+				<button type="submit" class="btn btn-primary btn-lg btn-block">RECORTAR
+					PRODUCTOS</button>
+	</form>
 
-			double totalPrice = 0;
-			double totalAllPrice = 0;
+	<%
+		if (session.getAttribute("exito") != null) {
+	%>
+	<div class="alert alert-success" role="alert">Los datos fueron
+		cargados de manera exitosa.</div>
 
-			while (rs2.next()) {
-				p.setId(rs2.getInt("id"));
-				p.setName(rs2.getString("name"));
-				p.setPrice(rs2.getDouble("price"));
-				p.setSku(rs2.getInt("sku"));
-				p.setUnitys(rs2.getDouble("unitys"));
-				p.setType(rs2.getString("type"));
-				p.setMetersByType(rs2.getDouble("metersbytype"));
-				p.setDisponibleMeters(rs2.getDouble("disponiblemeters"));
-				p.setDiscountType(rs2.getString("discounttype"));
+	<%
+		session.removeAttribute("exito");
 
-				price = p.getPrice();
-				discountType = p.getDiscountType();
-				price = Discounter.discount(discountType, price);
+	}
+	%>
 
-				totalMeters = p.getMetersByType() * p.getUnitys();
-				totalAllMeters += totalMeters;
-
-				totalPrice = price * totalMeters;
-				totalPrice = Rounder.roundByFourZeroes(totalPrice);
-				totalAllPrice += totalPrice;
-			%>
-			<tr>
-				<th scope="row"><%=p.getId()%></th>
-				<td><%=p.getSku()%></td>
-				<td><%=p.getName()%></td>
-				<td><%=p.getType()%></td>
-				<td><%=p.getMetersByType()%> mts</td>
-				<td><%=p.getUnitys()%></td>
-				<td><%=totalMeters%> mts</td>
-				<td>Not Working yet</td>
-				<td><%=price%> usd</td>
-				<td><%=totalPrice%> usd</td>
-				<td>
-					<ul class="navbar-nav mr-auto">
-						<li class="nav-item dropdown"><a
-							class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
-							role="button" data-toggle="dropdown" aria-haspopup="true"
-							aria-expanded="false"> Opciones </a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-								<form action="stockmodify" method="POST">
-									<div class="form-check">
-										<input class="form-check-input" type="radio" name="modify"
-											id="inlineRadio1" value=<%="delete"+p.getId()%>> <label
-											class="form-check-label" for="inlineRadio1">Eliminar</label>
-									</div>
-									<div class="form-check">
-										<input class="form-check-input" type="radio" name="modify"
-											id="inlineRadio2" value=<%="productmodify"+p.getId()%>> <label
-											class="form-check-label" for="inlineRadio2">Modificar producto</label>
-									</div>
-									<div class="col-auto my-1">
-										<button type="submit" class="btn btn-primary">Aceptar</button>
-									</div>
-								</form>
-							</div></li>
-					</ul>
-				</td>
-			</tr>
-			<%
-				}
-			%>
-			<%
-				totalAllPrice = Rounder.roundByFourZeroes(totalAllPrice);
-			%>
-			<tr>
-				<th scope="row"></th>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td></td>
-				<td><strong>TOTAL: </strong></td>
-				<td><%=totalAllMeters%> mts</td>
-				<td></td>
-				<td><strong>TOTAL: </strong></td>
-				<td><%=totalAllPrice%> usd</td>
-				<td><input type="button"
-					onclick="tableToExcel('testTable', 'W3C Example Table')"
-					value="Exportar a Excel">
-				</td>
-			</tr>
-
-		</tbody>
-	</table>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
 		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
 		crossorigin="anonymous"></script>
@@ -226,6 +188,5 @@
 		src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
 		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 		crossorigin="anonymous"></script>
-	<script src="tableToExcel.js"></script>
 </body>
 </html>

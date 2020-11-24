@@ -12,7 +12,7 @@ public class Discounter {
 			priceWithDiscount = price * 0.5 * 0.95;
 		}else if (type.equalsIgnoreCase("antihurto")) {
 			priceWithDiscount = price * 0.53;
-		}else if (type.equalsIgnoreCase("paralelo")) {
+		}else if (type.equalsIgnoreCase("paralelo") || type.equalsIgnoreCase("bipolar")) {
 			priceWithDiscount = price * 0.5 * 0.95;
 		}else if (type.equalsIgnoreCase("bomba sumergible")) {
 			priceWithDiscount = price * 0.5 * 0.95;

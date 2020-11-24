@@ -20,6 +20,24 @@
   	<description></description>
   	<servlet-class>com.cablesfb.controller.SearcherController</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>DeleteStockController</servlet-name>
+  	<display-name>DeleteStockController</display-name>
+  	<description></description>
+  	<servlet-class>com.cablesfb.controller.DeleteStockController</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>TrimController</servlet-name>
+  	<display-name>TrimController</display-name>
+  	<description></description>
+  	<servlet-class>com.cablesfb.controller.TrimController</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>ModifyStockController</servlet-name>
+  	<display-name>ModifyStockController</display-name>
+  	<description></description>
+  	<servlet-class>com.cablesfb.controller.ModifyStockController</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>ControllerLogin</servlet-name>
   	<url-pattern>/ControllerLogin</url-pattern>
@@ -31,5 +49,17 @@
   <servlet-mapping>
   	<servlet-name>SearcherController</servlet-name>
   	<url-pattern>/SearcherController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>DeleteStockController</servlet-name>
+  	<url-pattern>/DeleteStockController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>TrimController</servlet-name>
+  	<url-pattern>/TrimController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>ModifyStockController</servlet-name>
+  	<url-pattern>/ModifyStockController</url-pattern>
   </servlet-mapping>
 </web-app>

@@ -1,4 +1,5 @@
-
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@page import="com.cablesfb.helper.Rounder"%>
 <%@page import="com.cablesfb.helper.Discounter"%>
 <%@page import="java.sql.ResultSet"%>
@@ -26,10 +27,6 @@
 		out.print("<script>location.replace('/sistfb/index.jsp');</script>");
 	}
 	%>
-
-
-
-
 
 
 
@@ -98,6 +95,7 @@
 
 	</nav>
 	<br>
+
 	<!--  tabla abajo -->
 	<table class="table" id="testTable">
 		<thead class="thead-dark">
@@ -119,9 +117,9 @@
 
 
 			<%
-				Product p = new Product();
-			ProductDAO pdao = new ProductDAO();
-			ResultSet rs2 = pdao.searchAll();
+				List<Product> productL = new ArrayList<Product>();
+			productL = (List<Product>) session.getAttribute("search");
+
 			double price = 0;
 			String discountType = "";
 
@@ -131,17 +129,9 @@
 			double totalPrice = 0;
 			double totalAllPrice = 0;
 
-			while (rs2.next()) {
-				p.setId(rs2.getInt("id"));
-				p.setName(rs2.getString("name"));
-				p.setPrice(rs2.getDouble("price"));
-				p.setSku(rs2.getInt("sku"));
-				p.setUnitys(rs2.getDouble("unitys"));
-				p.setType(rs2.getString("type"));
-				p.setMetersByType(rs2.getDouble("metersbytype"));
-				p.setDisponibleMeters(rs2.getDouble("disponiblemeters"));
-				p.setDiscountType(rs2.getString("discounttype"));
-
+			for (int i = 0; i < productL.size(); i++) {
+				Product p = new Product();
+				p = productL.get(i);
 				price = p.getPrice();
 				discountType = p.getDiscountType();
 				price = Discounter.discount(discountType, price);
@@ -192,9 +182,9 @@
 			</tr>
 			<%
 				}
-			%>
-			<%
+				
 				totalAllPrice = Rounder.roundByFourZeroes(totalAllPrice);
+				session.removeAttribute("search");
 			%>
 			<tr>
 				<th scope="row"></th>
@@ -210,7 +200,7 @@
 				<td><input type="button"
 					onclick="tableToExcel('testTable', 'W3C Example Table')"
 					value="Exportar a Excel">
-				</td>
+					</td>
 			</tr>
 
 		</tbody>

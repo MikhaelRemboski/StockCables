@@ -17,7 +17,7 @@ import com.cablesfb.modeldao.ProductDAO;
  * Servlet implementation class SearcherController
  */
 @WebServlet("/search")
-public class SearcherController extends HttpServlet {
+public class SearchStockController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 

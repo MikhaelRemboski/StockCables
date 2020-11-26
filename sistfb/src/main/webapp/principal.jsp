@@ -70,6 +70,15 @@
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="../sistfb/recorte.jsp">Recorte</a>
 					</div></li>
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" href="../inicio/stock.html"
+					id="navbarDropdown" role="button" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="false"> Clientes </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="../sistfb/clienteagregar.jsp">Cargar Clientes</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="../sistfb/clientever.jsp">Ver Clientes</a>
+					</div></li>
 			</ul>
 
 			<form action="search" method="GET" class="form-inline my-2 my-lg-0">
@@ -174,13 +183,14 @@
 								<form action="stockmodify" method="POST">
 									<div class="form-check">
 										<input class="form-check-input" type="radio" name="modify"
-											id="inlineRadio1" value=<%="delete"+p.getId()%>> <label
+											id="inlineRadio1" value=<%="delete" + p.getId()%>> <label
 											class="form-check-label" for="inlineRadio1">Eliminar</label>
 									</div>
 									<div class="form-check">
 										<input class="form-check-input" type="radio" name="modify"
-											id="inlineRadio2" value=<%="productmodify"+p.getId()%>> <label
-											class="form-check-label" for="inlineRadio2">Modificar producto</label>
+											id="inlineRadio2" value=<%="productmodify" + p.getId()%>>
+										<label class="form-check-label" for="inlineRadio2">Modificar
+											producto</label>
 									</div>
 									<div class="col-auto my-1">
 										<button type="submit" class="btn btn-primary">Aceptar</button>
@@ -209,8 +219,7 @@
 				<td><%=totalAllPrice%> usd</td>
 				<td><input type="button"
 					onclick="tableToExcel('testTable', 'W3C Example Table')"
-					value="Exportar a Excel">
-				</td>
+					value="Exportar a Excel"></td>
 			</tr>
 
 		</tbody>

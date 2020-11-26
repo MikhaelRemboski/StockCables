@@ -14,7 +14,7 @@ import com.cablesfb.model.Product;
 import com.cablesfb.modeldao.ProductDAO;
 
 @WebServlet("/trim")
-public class TrimController extends HttpServlet {
+public class TrimStockController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)

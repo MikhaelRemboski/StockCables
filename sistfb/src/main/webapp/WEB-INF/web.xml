@@ -38,6 +38,18 @@
   	<description></description>
   	<servlet-class>com.cablesfb.controller.ModifyStockController</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>InsertClientController</servlet-name>
+  	<display-name>InsertClientController</display-name>
+  	<description></description>
+  	<servlet-class>com.cablesfb.controller.InsertClientController</servlet-class>
+  </servlet>
+  <servlet>
+  	<servlet-name>ModifyClientController</servlet-name>
+  	<display-name>ModifyClientController</display-name>
+  	<description></description>
+  	<servlet-class>com.cablesfb.controller.ModifyClientController</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>ControllerLogin</servlet-name>
   	<url-pattern>/ControllerLogin</url-pattern>
@@ -61,5 +73,13 @@
   <servlet-mapping>
   	<servlet-name>ModifyStockController</servlet-name>
   	<url-pattern>/ModifyStockController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>InsertClientController</servlet-name>
+  	<url-pattern>/InsertClientController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>ModifyClientController</servlet-name>
+  	<url-pattern>/ModifyClientController</url-pattern>
   </servlet-mapping>
 </web-app>

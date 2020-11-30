@@ -1,20 +1,26 @@
-<%@page import="com.cablesfb.helper.Rounder"%>
-<%@page import="com.cablesfb.helper.Discounter"%>
+<%@page import="com.cablesfb.model.Product"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="com.cablesfb.modeldao.ProductDAO"%>
-<%@page import="com.cablesfb.model.Product"%>
+<%@page import="com.cablesfb.helper.Rounder"%>
+<%@page import="com.cablesfb.helper.Discounter"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.cablesfb.model.Client"%>
+<%@page import="java.util.List"%>
+<%@page import="com.cablesfb.modeldao.ClientDAO"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page session="true"%>
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
 	crossorigin="anonymous">
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
 </head>
 <body>
 	<%
@@ -28,7 +34,7 @@
 
 
 
-<!-- navbar abajo -->
+	<!-- navbar abajo -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<a class="navbar-brand" href="../sistfb/principal.jsp">Inicio</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -44,13 +50,11 @@
 					id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false"> Pedidos </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="#">Ver Pedidos</a>
+						<a class="dropdown-item" href="../sistfb/ordenver.jsp">Ver
+							Pedidos</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#">Cargar Pedidos</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#">Despachar Pedidos</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#">Modificar Pedidos</a>
+						<a class="dropdown-item" href="../sistfb/ordencrear.jsp">Cargar
+							Pedidos</a>
 					</div></li>
 				<li class="nav-item dropdown"><a
 					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
@@ -70,17 +74,19 @@
 					id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false"> Clientes </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="../sistfb/clienteagregar.jsp">Cargar Clientes</a>
+						<a class="dropdown-item" href="../sistfb/clienteagregar.jsp">Cargar
+							Clientes</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="../sistfb/clientever.jsp">Ver Clientes</a>
+						<a class="dropdown-item" href="../sistfb/clientever.jsp">Ver
+							Clientes</a>
 					</div></li>
 			</ul>
 
 			<form action="search" method="GET" class="form-inline my-2 my-lg-0">
 				<input class="form-control mr-sm-2" type="search"
-					placeholder="Nombre, ID o sku" aria-label="Search" name="search">
-				<button class="btn btn-outline-success my-2 my-sm-0" name="accion" value="searchProduct" type="submit">Buscar
-					Producto</button>
+					placeholder="Nombre, ID o Cuit" aria-label="Search" name="search">
+				<button class="btn btn-outline-success my-2 my-sm-0" name="accion"
+					value="searchClient" type="submit">Buscar Cliente</button>
 			</form>
 			<ul class="navbar-nav mr-right">
 				<li class="nav-item dropdown"><a
@@ -102,8 +108,67 @@
 
 	</nav>
 	<br>
+
+
 	<!--  tabla abajo -->
-	<form method="GET" action="trim">
+	<%
+		if (request.getSession().getAttribute("clientOrder") == null) {
+	%>
+	<form method="GET" action="order">
+		<table class="table" id="testTable">
+			<thead class="thead-dark">
+				<tr>
+					<th scope="col">Seleccionar</th>
+					<th scope="col">Nombre</th>
+					<th scope="col">Cuit</th>
+					<th scope="col">Direccion</th>
+					<th scope="col">Correo electronico</th>
+				</tr>
+			</thead>
+			<tbody>
+				<%
+					ClientDAO cdao = new ClientDAO();
+				List<Client> listC = new ArrayList<Client>();
+				listC = cdao.selectAll();
+
+				for (int i = 0; i < listC.size(); i++) {
+					Client c = new Client();
+					c = listC.get(i);
+				%>
+				<tr>
+					<th scope="row">
+						<div class="form-check">
+							<input class="form-check-input" name="idClient" type="checkbox"
+								value=<%=c.getId()%> id="defaultCheck1">
+						</div>
+					</th>
+					<td><%=c.getName()%></td>
+					<td><%=c.getCuit()%></td>
+					<td><%=c.getAdress()%></td>
+					<td><%=c.getEmail()%></td>
+				</tr>
+
+				<%
+					}
+				%>
+				<tr>
+					<th scope="row">
+						<button class="btn btn-outline-success my-2 my-sm-0"  name="accion" value="clientSelect" type="submit">Seleccionar
+							Cliente</button>
+					</th>
+					<td></td>
+					<td></td>
+					<td></td>
+					<td></td>
+				</tr>
+			</tbody>
+		</table>
+	</form>
+	<%
+		} else {
+	%>
+
+	<form method="GET" action="order">
 		<table class="table" id="testTable">
 			<thead class="thead-dark">
 				<tr>
@@ -160,7 +225,7 @@
 				<tr>
 					<th scope="row">
 							<div class="form-check">
-								<input class="form-check-input" name="idRecorte" type="checkbox"
+								<input class="form-check-input" name="idProduct" type="checkbox"
 									value=<%=p.getId()%> id="defaultCheck1">
 							</div>
 					</th>
@@ -183,10 +248,8 @@
 				%>
 				<tr>
 					<th scope="row">
-
-						<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Recortar
+						<button class="btn btn-outline-success my-2 my-sm-0" name="accion" value="productSelect" type="submit">Seleccionar
 							Productos</button>
-
 					</th>
 					<td></td>
 					<td></td>
@@ -203,6 +266,11 @@
 			</tbody>
 		</table>
 	</form>
+
+	<%
+
+		}
+	%>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
 		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
 		crossorigin="anonymous"></script>

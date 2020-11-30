@@ -50,6 +50,12 @@
   	<description></description>
   	<servlet-class>com.cablesfb.controller.ModifyClientController</servlet-class>
   </servlet>
+  <servlet>
+  	<servlet-name>OrderController</servlet-name>
+  	<display-name>OrderController</display-name>
+  	<description></description>
+  	<servlet-class>com.cablesfb.controller.OrderController</servlet-class>
+  </servlet>
   <servlet-mapping>
   	<servlet-name>ControllerLogin</servlet-name>
   	<url-pattern>/ControllerLogin</url-pattern>
@@ -81,5 +87,9 @@
   <servlet-mapping>
   	<servlet-name>ModifyClientController</servlet-name>
   	<url-pattern>/ModifyClientController</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+  	<servlet-name>OrderController</servlet-name>
+  	<url-pattern>/OrderController</url-pattern>
   </servlet-mapping>
 </web-app>

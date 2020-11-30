@@ -33,7 +33,7 @@
 
 
 
-		<!-- navbar abajo -->
+<!-- navbar abajo -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<a class="navbar-brand" href="../sistfb/principal.jsp">Inicio</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -65,17 +65,26 @@
 						<a class="dropdown-item" href="../sistfb/principal.jsp">Ver
 							Stock</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="../sistfb/addproduct.jsp">Modificar
+						<a class="dropdown-item" href="../sistfb/addproduct.jsp">Agregar
 							Producto</a>
 						<div class="dropdown-divider"></div>
 						<a class="dropdown-item" href="../sistfb/recorte.jsp">Recorte</a>
+					</div></li>
+				<li class="nav-item dropdown"><a
+					class="nav-link dropdown-toggle" href="../inicio/stock.html"
+					id="navbarDropdown" role="button" data-toggle="dropdown"
+					aria-haspopup="true" aria-expanded="false"> Clientes </a>
+					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+						<a class="dropdown-item" href="../sistfb/clienteagregar.jsp">Cargar Clientes</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="../sistfb/clientever.jsp">Ver Clientes</a>
 					</div></li>
 			</ul>
 
 			<form action="search" method="GET" class="form-inline my-2 my-lg-0">
 				<input class="form-control mr-sm-2" type="search"
 					placeholder="Nombre, ID o sku" aria-label="Search" name="search">
-				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar
+				<button class="btn btn-outline-success my-2 my-sm-0" name="accion" value="searchProduct" type="submit">Buscar
 					Producto</button>
 			</form>
 			<ul class="navbar-nav mr-right">
@@ -97,7 +106,7 @@
 		</div>
 
 	</nav>
-	<br>      
+	<br>
 
     <form action="modifystock" method="POST" name="modifystock" class="was-validated" >
         <div class="row">

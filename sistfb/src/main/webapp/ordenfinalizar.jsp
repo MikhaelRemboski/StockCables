@@ -1,20 +1,15 @@
-<%@page import="com.cablesfb.helper.Rounder"%>
-<%@page import="com.cablesfb.helper.Discounter"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="com.cablesfb.modeldao.ProductDAO"%>
-<%@page import="com.cablesfb.model.Product"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
-<%@ page session="true"%>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <link rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
 	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
 	crossorigin="anonymous">
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
 </head>
 <body>
 	<%
@@ -28,7 +23,7 @@
 
 
 
-<!-- navbar abajo -->
+	<!-- navbar abajo -->
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
 		<a class="navbar-brand" href="../sistfb/principal.jsp">Inicio</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse"
@@ -44,13 +39,11 @@
 					id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false"> Pedidos </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="#">Ver Pedidos</a>
+						<a class="dropdown-item" href="../sistfb/ordenver.jsp">Ver
+							Pedidos</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#">Cargar Pedidos</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#">Despachar Pedidos</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#">Modificar Pedidos</a>
+						<a class="dropdown-item" href="../sistfb/ordencrear.jsp">Cargar
+							Pedidos</a>
 					</div></li>
 				<li class="nav-item dropdown"><a
 					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
@@ -70,17 +63,19 @@
 					id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false"> Clientes </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="../sistfb/clienteagregar.jsp">Cargar Clientes</a>
+						<a class="dropdown-item" href="../sistfb/clienteagregar.jsp">Cargar
+							Clientes</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="../sistfb/clientever.jsp">Ver Clientes</a>
+						<a class="dropdown-item" href="../sistfb/clientever.jsp">Ver
+							Clientes</a>
 					</div></li>
 			</ul>
 
 			<form action="search" method="GET" class="form-inline my-2 my-lg-0">
 				<input class="form-control mr-sm-2" type="search"
-					placeholder="Nombre, ID o sku" aria-label="Search" name="search">
-				<button class="btn btn-outline-success my-2 my-sm-0" name="accion" value="searchProduct" type="submit">Buscar
-					Producto</button>
+					placeholder="Nombre, ID o Cuit" aria-label="Search" name="search">
+				<button class="btn btn-outline-success my-2 my-sm-0" name="accion"
+					value="searchClient" type="submit">Buscar Cliente</button>
 			</form>
 			<ul class="navbar-nav mr-right">
 				<li class="nav-item dropdown"><a
@@ -102,107 +97,72 @@
 
 	</nav>
 	<br>
+	<br>
+
 	<!--  tabla abajo -->
-	<form method="GET" action="trim">
-		<table class="table" id="testTable">
-			<thead class="thead-dark">
+
+	<div class="container">
+		<table class="table-borderless">
+
+			<thead>
+
 				<tr>
-					<th scope="col">Seleccionar</th>
-					<th scope="col">sku</th>
-					<th scope="col">nombre</th>
-					<th scope="col">tipo</th>
-					<th scope="col">metros por tipo</th>
-					<th scope="col">Unidades</th>
-					<th scope="col">metros totales</th>
-					<th scope="col">metros totales disp</th>
-					<th scope="col">Precio por metro</th>
-					<th scope="col">Precio total</th>
+					<th scope="row"></th>
+
+					<th scope="row"></th>
+					<th scope="row"></th>
+					<th scope="row"></th>
 				</tr>
 			</thead>
 			<tbody>
-
-
-				<%
-					Product p = new Product();
-				ProductDAO pdao = new ProductDAO();
-				ResultSet rs2 = pdao.searchAll();
-				double price = 0;
-				String discountType = "";
-
-				double totalMeters = 0;
-				double totalAllMeters = 0;
-
-				double totalPrice = 0;
-				double totalAllPrice = 0;
-
-				while (rs2.next()) {
-					p.setId(rs2.getInt("id"));
-					p.setName(rs2.getString("name"));
-					p.setPrice(rs2.getDouble("price"));
-					p.setSku(rs2.getInt("sku"));
-					p.setUnitys(rs2.getDouble("unitys"));
-					p.setType(rs2.getString("type"));
-					p.setMetersByType(rs2.getDouble("metersbytype"));
-					p.setDisponibleMeters(rs2.getDouble("disponiblemeters"));
-					p.setDiscountType(rs2.getString("discounttype"));
-
-					price = p.getPrice();
-					discountType = p.getDiscountType();
-					price = Discounter.discount(discountType, price);
-
-					totalMeters = p.getMetersByType() * p.getUnitys();
-					totalAllMeters += totalMeters;
-
-					totalPrice = price * totalMeters;
-					totalPrice = Rounder.roundByFourZeroes(totalPrice);
-					totalAllPrice += totalPrice;
-				%>
 				<tr>
-					<th scope="row">
-							<div class="form-check">
-								<input class="form-check-input" name="idRecorte" type="checkbox"
-									value=<%=p.getId()%> id="defaultCheck1">
-							</div>
-					</th>
-
-					<td><%=p.getSku()%></td>
-					<td><%=p.getName()%></td>
-					<td><%=p.getType()%></td>
-					<td><%=p.getMetersByType()%> mts</td>
-					<td><%=p.getUnitys()%></td>
-					<td><%=totalMeters%> mts</td>
-					<td>Not Working yet</td>
-					<td><%=price%> usd</td>
-					<td><%=totalPrice%> usd</td>
+					<th>Cliente:</th>
+					<td>Mikhael Remboski</td>
+					<td></td>
+					<td></td>
 				</tr>
-				<%
-					}
-				%>
-				<%
-					totalAllPrice = Rounder.roundByFourZeroes(totalAllPrice);
-				%>
 				<tr>
-					<th scope="row">
-
-						<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Recortar
-							Productos</button>
-
-					</th>
+					<th>Direccion:</th>
+					<td>Lascano 4373 Monte Castro Caba</td>
 					<td></td>
 					<td></td>
-					<td></td>
-					<td></td>
-					<td><strong>TOTAL: </strong></td>
-					<td><%=totalAllMeters%> mts</td>
-					<td></td>
-					<td><strong>TOTAL: </strong></td>
-					<td><%=totalAllPrice%> usd</td>
-					
 				</tr>
-				
+				<tr>
+					<th>Email:</th>
+					<td>mikhaelcuervo@gmail.com</td>
+					<td></td>
+					<td></td>
+				</tr>
 			</tbody>
 		</table>
-	</form>
+
+	</div>
+	<br>
+	<br>
+
+	<table class="table table-borderless">
+		<thead>
+			<tr>
+				<th scope="col">#</th>
+				<th scope="col">Id de Producto</th>
+				<th scope="col">Descripcion</th>
+				<th scope="col">Unidades</th>
+				<th scope="col">Precio</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<th scope="row">1</th>
+				<td>323</td>
+				<td>Unipolar</td>
+				<td>20</td>
+				<td>39 usd</td>
+			</tr>
+		</tbody>
+	</table>
+
+
+
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
 		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
 		crossorigin="anonymous"></script>

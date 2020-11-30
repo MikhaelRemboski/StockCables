@@ -84,7 +84,7 @@
 			<form action="search" method="GET" class="form-inline my-2 my-lg-0">
 				<input class="form-control mr-sm-2" type="search"
 					placeholder="Nombre, ID o sku" aria-label="Search" name="search">
-				<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Buscar
+				<button class="btn btn-outline-success my-2 my-sm-0" name="accion" value="searchProduct" type="submit">Buscar
 					Producto</button>
 			</form>
 			<ul class="navbar-nav mr-right">

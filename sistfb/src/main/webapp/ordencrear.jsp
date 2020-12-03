@@ -86,7 +86,7 @@
 				<input class="form-control mr-sm-2" type="search"
 					placeholder="Nombre, ID o Cuit" aria-label="Search" name="search">
 				<button class="btn btn-outline-success my-2 my-sm-0" name="accion"
-					value="searchClient" type="submit">Buscar Cliente</button>
+					value="searchClientToCreate" type="submit">Buscar Cliente</button>
 			</form>
 			<ul class="navbar-nav mr-right">
 				<li class="nav-item dropdown"><a
@@ -127,9 +127,17 @@
 			</thead>
 			<tbody>
 				<%
-					ClientDAO cdao = new ClientDAO();
 				List<Client> listC = new ArrayList<Client>();
-				listC = cdao.selectAll();
+			
+				if(request.getSession().getAttribute("search") != null){
+					ClientDAO cdao = new ClientDAO();
+					listC = (List<Client>)request.getSession().getAttribute("search");
+					request.getSession().removeAttribute("search");
+				}else{
+					ClientDAO cdao = new ClientDAO();
+					listC = cdao.selectAll();
+				}
+				
 
 				for (int i = 0; i < listC.size(); i++) {
 					Client c = new Client();

@@ -1,3 +1,9 @@
+<%@page import="com.cablesfb.helper.Discounter"%>
+<%@page import="com.cablesfb.helper.Rounder"%>
+<%@page import="com.cablesfb.model.Product"%>
+<%@page import="com.cablesfb.modeldao.ProductDAO"%>
+<%@page import="com.cablesfb.modeldao.OrderDAO"%>
+<%@page import="com.cablesfb.model.Order"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="com.cablesfb.model.Client"%>
 <%@page import="java.util.List"%>
@@ -112,36 +118,59 @@
 				<th scope="col">Id</th>
 				<th scope="col">Id Pedido</th>
 				<th scope="col">Nombre Cliente</th>
+				<th scope="col">Monto</th>
 				<th scope="col">Estado</th>
 				<th scope="col">Accion</th>
 			</tr>
 		</thead>
 		<tbody>
+			<%
+				OrderDAO oDAO = new OrderDAO();
+			List<Order> oList = new ArrayList<Order>();
+			oList = oDAO.selectNoRepeatOrderId();
+			for (Order aux : oList) {
+				Order o = new Order();
+				o = aux;
+				Client c = new Client();
+				ClientDAO cDAO = new ClientDAO();
+				c = cDAO.searchById(o.getClientId());
+			%>
 			<tr>
-				<th scope="row"></th>
-				<td></td>
-				<td></td>
-				<td></td>
+				<th scope="row"><%=o.getId()%></th>
+				<td><%=o.getOrderId()%></td>
+				<td><%=c.getName()%></td>
+				<td><%=Rounder.roundByFourZeroes(o.getTotalPrice())%></td>
+				<td><%=o.getState()%></td>
 				<td>
 					<ul class="navbar-nav mr-auto">
 						<li class="nav-item dropdown"><a
 							class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
 							role="button" data-toggle="dropdown" aria-haspopup="true"
 							aria-expanded="false"> Opciones </a>
-							<form action="clientmodify" method="POST">
+							<form action="order" method="POST">
 								<div class="dropdown-menu" aria-labelledby="navbarDropdown">
 									<div class="form-check">
 										<input class="form-check-input" type="radio" name="modify"
-											id="inlineRadio1" value=> <label
-											class="form-check-label" for="inlineRadio1">Eliminar</label>
+											id="inlineRadio1" value=<%="delete" + o.getOrderId()%>>
+										<label class="form-check-label" for="inlineRadio1">Eliminar</label>
 									</div>
 									<div class="form-check">
 										<input class="form-check-input" type="radio" name="modify"
-											id="inlineRadio2" value=>
-										<label class="form-check-label" for="inlineRadio2">Modificar</label>
+											id="inlineRadio2" value=<%="packoff" + o.getOrderId()%>>
+										<label class="form-check-label" for="inlineRadio2">Despachar</label>
+									</div>
+									<div class="form-check">
+										<input class="form-check-input" type="radio" name="modify"
+											id="inlineRadio2" value=<%="clientmodify" + o.getOrderId()%>>
+										<label class="form-check-label" for="inlineRadio2">Modificar Cliente</label>
+									</div>
+									<div class="form-check">
+										<input class="form-check-input" type="radio" name="modify"
+											id="inlineRadio2" value=<%="modifyproduct" + o.getOrderId()%>>
+										<label class="form-check-label" for="inlineRadio2">Modificar Producto</label>
 									</div>
 									<div class="col-auto my-1">
-										<button type="submit" name="accion" value="modifyclient"
+										<button type="submit" name="accion" value="modifyOrder"
 											class="btn btn-primary">Aceptar</button>
 									</div>
 								</div>
@@ -149,6 +178,14 @@
 					</ul>
 				</td>
 			</tr>
+			<%
+				}
+			%>
+
+
+
+
+
 			<tr>
 				<th scope="row"></th>
 				<td></td>

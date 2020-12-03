@@ -1,4 +1,8 @@
 
+<%@page import="com.cablesfb.modeldao.OrderDAO"%>
+<%@page import="com.cablesfb.model.Order"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@page import="com.cablesfb.helper.Rounder"%>
 <%@page import="com.cablesfb.helper.Discounter"%>
 <%@page import="java.sql.ResultSet"%>
@@ -49,13 +53,11 @@
 					id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false"> Pedidos </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="#">Ver Pedidos</a>
+						<a class="dropdown-item" href="../sistfb/ordenver.jsp">Ver
+							Pedidos</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#">Cargar Pedidos</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#">Despachar Pedidos</a>
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="#">Modificar Pedidos</a>
+						<a class="dropdown-item" href="../sistfb/ordencrear.jsp">Cargar
+							Pedidos</a>
 					</div></li>
 				<li class="nav-item dropdown"><a
 					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
@@ -75,9 +77,11 @@
 					id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false"> Clientes </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="../sistfb/clienteagregar.jsp">Cargar Clientes</a>
+						<a class="dropdown-item" href="../sistfb/clienteagregar.jsp">Cargar
+							Clientes</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="../sistfb/clientever.jsp">Ver Clientes</a>
+						<a class="dropdown-item" href="../sistfb/clientever.jsp">Ver
+							Clientes</a>
 					</div></li>
 			</ul>
 
@@ -136,10 +140,13 @@
 
 			double totalMeters = 0;
 			double totalAllMeters = 0;
-
+			double reservedMeters = 0;
+			
 			double totalPrice = 0;
 			double totalAllPrice = 0;
-
+			List<Order> oList = new ArrayList<Order>();
+			OrderDAO oDAO = new OrderDAO();
+			oList = oDAO.selectAllByState();
 			while (rs2.next()) {
 				p.setId(rs2.getInt("id"));
 				p.setName(rs2.getString("name"));
@@ -150,7 +157,7 @@
 				p.setMetersByType(rs2.getDouble("metersbytype"));
 				p.setDisponibleMeters(rs2.getDouble("disponiblemeters"));
 				p.setDiscountType(rs2.getString("discounttype"));
-
+		
 				price = p.getPrice();
 				discountType = p.getDiscountType();
 				price = Discounter.discount(discountType, price);
@@ -161,6 +168,22 @@
 				totalPrice = price * totalMeters;
 				totalPrice = Rounder.roundByFourZeroes(totalPrice);
 				totalAllPrice += totalPrice;
+				reservedMeters = 0;
+				 
+				for(Order aux : oList){
+					Order o = aux;
+					if(p.getId() == o.getProductId()){
+						reservedMeters += o.getUnitys() * p.getMetersByType();
+						p.setDisponibleMeters(totalMeters - reservedMeters);
+
+					}
+
+				}
+				if (p.getDisponibleMeters() == 0){
+					p.setDisponibleMeters(totalMeters);	
+					}
+
+		
 			%>
 			<tr>
 				<th scope="row"><%=p.getId()%></th>
@@ -170,7 +193,7 @@
 				<td><%=p.getMetersByType()%> mts</td>
 				<td><%=p.getUnitys()%></td>
 				<td><%=totalMeters%> mts</td>
-				<td>Not Working yet</td>
+				<td><%=p.getDisponibleMeters() %></td>
 				<td><%=price%> usd</td>
 				<td><%=totalPrice%> usd</td>
 				<td>

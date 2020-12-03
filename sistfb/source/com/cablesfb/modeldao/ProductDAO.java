@@ -77,6 +77,7 @@ public class ProductDAO {
 			ResultSet rs = ps.executeQuery();
 			Product p = new Product();
 			
+			
 			while (rs.next()) {
 				p.setId(rs.getInt("id"));
 				p.setName(rs.getString("name"));

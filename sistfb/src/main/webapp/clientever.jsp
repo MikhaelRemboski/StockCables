@@ -45,9 +45,11 @@
 					id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false"> Pedidos </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="../sistfb/ordenver.jsp">Ver Pedidos</a>
+						<a class="dropdown-item" href="../sistfb/ordenver.jsp">Ver
+							Pedidos</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="../sistfb/ordencrear.jsp">Cargar Pedidos</a>
+						<a class="dropdown-item" href="../sistfb/ordencrear.jsp">Cargar
+							Pedidos</a>
 					</div></li>
 				<li class="nav-item dropdown"><a
 					class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
@@ -67,9 +69,11 @@
 					id="navbarDropdown" role="button" data-toggle="dropdown"
 					aria-haspopup="true" aria-expanded="false"> Clientes </a>
 					<div class="dropdown-menu" aria-labelledby="navbarDropdown">
-						<a class="dropdown-item" href="../sistfb/clienteagregar.jsp">Cargar Clientes</a>
+						<a class="dropdown-item" href="../sistfb/clienteagregar.jsp">Cargar
+							Clientes</a>
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="../sistfb/clientever.jsp">Ver Clientes</a>
+						<a class="dropdown-item" href="../sistfb/clientever.jsp">Ver
+							Clientes</a>
 					</div></li>
 			</ul>
 

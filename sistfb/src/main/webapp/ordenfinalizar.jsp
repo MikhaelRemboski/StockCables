@@ -1,3 +1,9 @@
+<%@page import="com.cablesfb.helper.Discounter"%>
+<%@page import="com.cablesfb.modeldao.ClientDAO"%>
+<%@page import="com.cablesfb.model.Client"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="com.cablesfb.model.Product"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -17,6 +23,9 @@
 	if (session.getAttribute("email") == null && session.getAttribute("name") == null) {
 		out.print("<script>location.replace('/sistfb/index.jsp');</script>");
 	}
+	Client c = (Client) session.getAttribute("clientOrder");
+	List<Product> productL = new ArrayList<Product>();
+	productL = (List<Product>) session.getAttribute("productOrder");
 	%>
 
 
@@ -101,6 +110,7 @@
 
 	<!--  tabla abajo -->
 
+
 	<div class="container">
 		<table class="table-borderless">
 
@@ -117,19 +127,19 @@
 			<tbody>
 				<tr>
 					<th>Cliente:</th>
-					<td>Mikhael Remboski</td>
+					<td><%=c.getName()%></td>
 					<td></td>
 					<td></td>
 				</tr>
 				<tr>
 					<th>Direccion:</th>
-					<td>Lascano 4373 Monte Castro Caba</td>
+					<td><%=c.getAdress()%></td>
 					<td></td>
 					<td></td>
 				</tr>
 				<tr>
 					<th>Email:</th>
-					<td>mikhaelcuervo@gmail.com</td>
+					<td><%=c.getEmail()%></td>
 					<td></td>
 					<td></td>
 				</tr>
@@ -140,29 +150,57 @@
 	<br>
 	<br>
 
-	<table class="table table-borderless">
-		<thead>
-			<tr>
-				<th scope="col">#</th>
-				<th scope="col">Id de Producto</th>
-				<th scope="col">Descripcion</th>
-				<th scope="col">Unidades</th>
-				<th scope="col">Precio</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<th scope="row">1</th>
-				<td>323</td>
-				<td>Unipolar</td>
-				<td>20</td>
-				<td>39 usd</td>
-			</tr>
-		</tbody>
-	</table>
-
-
-
+	<form action="order" method="post" class="form-inline">
+		<table class="table table-borderless">
+			<thead>
+				<tr>
+					<th scope="col">#</th>
+					<th scope="col">Id de Producto</th>
+					<th scope="col">Descripcion</th>
+					<th scope="col">Tipo</th>
+					<th scope="col">Metros por unidad</th>
+					<th scope="col">Unidades</th>
+					<th scope="col">Precio</th>
+				</tr>
+			</thead>
+			<tbody>
+				<%
+					int cont = 0;
+				double price = 0;
+				double totalPrice = 0;
+				String discountType = "";
+				for (Product aux : productL) {
+					cont++;
+					Product p = aux;
+					price = p.getPrice();
+					discountType = p.getDiscountType();
+					price = Discounter.discount(discountType, price);
+					totalPrice += price;
+					p.setPrice(price);
+				%>
+				<tr>
+					<th scope="row"><%=cont%></th>
+					<td><%=p.getId()%></td>
+					<td><%=p.getName()%></td>
+					<td><%=p.getType()%></td>
+					<td><%=p.getMetersByType()%></td>
+					<td>
+						<div class="form-group mx-sm-0 mb-0">
+							<label for="inputPassword2" class="sr-only">Unidades</label> <input
+								type="text" name="unitysOrder" class="form-control"
+								id="inputPassword2" placeholder="Unidades">
+						</div>
+					</td>
+					<td><%=price%></td>
+				</tr>
+				<%
+					}
+				%>
+			</tbody>
+		</table>
+		<button type="submit" name="accion" value="finishorder"
+			class="btn btn-primary btn-lg btn-block">Finalizar Orden</button>
+	</form>
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
 		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
 		crossorigin="anonymous"></script>

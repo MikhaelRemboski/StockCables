@@ -55,7 +55,22 @@ public class SearchController extends HttpServlet {
 				System.out.println(ex.getMessage());
 				System.out.println("Error en la busqueda");
 				request.getRequestDispatcher("principal.jsp").forward(request, response);
-			}
+			}	
+			}else if(accion.equalsIgnoreCase("searchClientToCreate")) {
+				try {
+					String search = request.getParameter("search");
+					ClientDAO cdao = new ClientDAO();
+					List<Client> cList = new ArrayList<Client>();
+					cList = cdao.search(search);
+					request.getSession().setAttribute("search", cList);
+					System.out.println("Busqueda completada");
+					request.getRequestDispatcher("ordencrear.jsp").forward(request, response);
+				} catch (Exception ex) {
+					System.out.println(ex.getMessage());
+					System.out.println("Error en la busqueda");
+					request.getRequestDispatcher("principal.jsp").forward(request, response);
+				}	
+				
 		}
 
 	}

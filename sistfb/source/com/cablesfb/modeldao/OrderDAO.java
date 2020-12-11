@@ -202,5 +202,74 @@ public class OrderDAO {
 			return null;
 		}
 	}
+	public void modifyClient(int clientId, long orderId) {
+		try {
+			Connector con = new Connector();
+			Connection cn = con.getOrderConnection();
+			String sql = "UPDATE `orders` SET `idClient`= ? WHERE `idOrder` = ?";
+			PreparedStatement ps = cn.prepareStatement(sql);
+			ps.setInt(1, clientId);
+			ps.setLong(2, orderId);
+			ps.executeUpdate();
+			cn.close();
+			ps.close();
+		} catch (Exception ex) {
 
-}
+		}
+	}
+	public void deleteByProductId(Long id, int productId) {
+		try {
+			String sql = "DELETE FROM `orders` WHERE `idOrder` = ? AND `idProduct` = ?";
+			Connector con = new Connector();
+			Connection cn = con.getOrderConnection();
+			PreparedStatement ps = cn.prepareStatement(sql);
+			ps.setLong(1, id);
+			ps.setInt(2, productId);
+			ps.executeUpdate();
+			cn.close();
+			ps.close();
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+	}	public void updateTotalPrice(Long orderId, double totalPrice) {
+		try {
+			String sql = "UPDATE `orders` SET `totalPrice`= ?  WHERE idOrder = ?";
+			Connector con = new Connector();
+			Connection cn = con.getOrderConnection();
+			PreparedStatement ps = cn.prepareStatement(sql);
+			ps.setDouble(1, totalPrice);
+			ps.setLong(2, orderId);
+			ps.executeUpdate();
+			cn.close();
+			ps.close();
+		} catch (Exception e) {
+			System.out.println("Error: " + e.getMessage());
+		}
+	}
+	public Order getOrderByOrderId(long id){                                  
+		try {                                                                         
+    		Connector con = new Connector();                                         
+    		Connection cn = con.getOrderConnection();                                
+    		String sql = "SELECT * FROM orders WHERE `idOrder` = ?";                 
+    		PreparedStatement ps = cn.prepareStatement(sql);                         
+    		ps.setLong(1, id);                                                       
+    		ResultSet rs = ps.executeQuery();                                        
+			Order o = new Order();  
+    		while (rs.next()) {                                                                                                   
+    			o.setClientId(rs.getInt("idClient"));                                
+    			o.setId(rs.getInt("id"));                                            
+    			o.setOrderId(rs.getLong("idOrder"));                                 
+    			o.setProductDescription(rs.getString("productDescription"));         
+    			o.setProductId(rs.getInt("idProduct"));                              
+    			o.setState(rs.getString("state"));                                   
+    			o.setUnitys(rs.getInt("unitys"));                                    
+    			o.setTotalPrice(rs.getDouble("totalPrice"));
+    		}                                                                        
+    		cn.close();                                                              
+    		ps.close();                                                              
+    		return o;                                                            
+    	} catch (Exception ex) {                                                     
+    		System.out.println("Error: " + ex.getMessage());                         
+    		return null;                                                             
+    	}                                                                            
+    }                                                                                }

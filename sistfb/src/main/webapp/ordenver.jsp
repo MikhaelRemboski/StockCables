@@ -162,12 +162,13 @@
 									<div class="form-check">
 										<input class="form-check-input" type="radio" name="modify"
 											id="inlineRadio2" value=<%="clientmodify" + o.getOrderId()%>>
-										<label class="form-check-label" for="inlineRadio2">Modificar Cliente</label>
+										<label class="form-check-label" for="inlineRadio2">Modificar
+											Cliente</label>
 									</div>
 									<div class="form-check">
 										<input class="form-check-input" type="radio" name="modify"
-											id="inlineRadio2" value=<%="modifyproduct" + o.getOrderId()%>>
-										<label class="form-check-label" for="inlineRadio2">Modificar Producto</label>
+											id="inlineRadio2" value=<%="seeorder" + o.getOrderId()%>>
+										<label class="form-check-label" for="inlineRadio2">Ver Orden</label>
 									</div>
 									<div class="col-auto my-1">
 										<button type="submit" name="accion" value="modifyOrder"

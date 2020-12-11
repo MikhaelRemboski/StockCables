@@ -29,29 +29,41 @@ public class ControllerLogin extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		doGet(request, response);
-		HttpSession session = request.getSession(true);
-		String email = request.getParameter("email");
-		String password = request.getParameter("password");
-		p.setEmail(email);
-		p.setPassword(password);
-		r = pdao.validate(p);
-		if (r == 1) {
+		try {
 			
-			session.setAttribute("name", "perroraton");
-			session.setAttribute("email", email);
-			session.setMaxInactiveInterval(0);
-			request.getRequestDispatcher("/principal.jsp").forward(request, response);
-			System.out.println(session.getId()+ "controller login");
-		} else {
+			
+			HttpSession session = request.getSession(true);
+			String email = request.getParameter("email");
+			String password = request.getParameter("password");
+			p.setEmail(email);
+			p.setPassword(password);
+			Person pValidate = pdao.validate(p);
+			String name = pValidate.getName();
+			if (p != null) {
+				
+				session.setAttribute("name", name);
+				session.setAttribute("email", email);
+				session.setMaxInactiveInterval(0);
+				request.getRequestDispatcher("/principal.jsp").forward(request, response);
+				System.out.println(session.getId()+ "controller login");
+			} else {
+				request.getRequestDispatcher("/index.jsp").forward(request, response);
+				
+			}
+
+			String close = request.getParameter("close");
+			if(close != null) {
+				session.invalidate();
+				request.getRequestDispatcher("/index.jsp").forward(request, response);
+				System.out.println("CERRANDO SESION");
+			}
+			
+		} catch (Exception e) {
+			request.getSession().invalidate();
 			request.getRequestDispatcher("/index.jsp").forward(request, response);
-			
+			System.out.println(e.getMessage());
+		
 		}
 
-		String close = request.getParameter("close");
-		if(close != null) {
-			session.invalidate();
-			request.getRequestDispatcher("/index.jsp").forward(request, response);
-			System.out.println("CERRANDO SESION");
-		}
 	}
 }

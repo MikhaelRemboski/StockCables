@@ -85,5 +85,12 @@ public class Product {
 	public void setDiscountType(String discountType) {
 		this.discountType = discountType;
 	}
+
+	@Override
+	public String toString() {
+		return "nombre=" + name + ", tipo=" + type + ", Metros por tipo=" + metersByType
+				+ ", unidades=" + unitys + ", precio=" + price + ", sku=" + sku
+				+ ", Tipo de descuento=" + discountType;
+	}
 	
 }

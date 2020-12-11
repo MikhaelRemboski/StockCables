@@ -1,12 +1,13 @@
-<%@page import="com.cablesfb.model.Product"%>
-<%@page import="java.sql.ResultSet"%>
-<%@page import="com.cablesfb.modeldao.ProductDAO"%>
 <%@page import="com.cablesfb.helper.Rounder"%>
+<%@page import="com.cablesfb.modeldao.ProductDAO"%>
+<%@page import="com.cablesfb.model.Product"%>
 <%@page import="com.cablesfb.helper.Discounter"%>
-<%@page import="java.util.ArrayList"%>
 <%@page import="com.cablesfb.model.Client"%>
-<%@page import="java.util.List"%>
 <%@page import="com.cablesfb.modeldao.ClientDAO"%>
+<%@page import="com.cablesfb.modeldao.OrderDAO"%>
+<%@page import="com.cablesfb.model.Order"%>
+<%@page import="java.util.ArrayList"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 <%@ page session="true"%>
@@ -27,6 +28,27 @@
 		System.out.println(session.getId() + "principal");
 	if (session.getAttribute("email") == null && session.getAttribute("name") == null) {
 		out.print("<script>location.replace('/sistfb/index.jsp');</script>");
+	}
+	Long orderId = Long.parseLong(request.getSession().getAttribute("orderIdToSee").toString());
+	OrderDAO oDAO = new OrderDAO();
+	Order o = new Order();
+
+	//Lista de productos a mostrar:
+	List<Order> orderList = new ArrayList<Order>();
+	orderList = oDAO.getOrdersByOrderId(orderId);
+
+	o = orderList.get(0);
+
+	//cliente:
+	ClientDAO cDAO = new ClientDAO();
+	Client c = cDAO.searchById(o.getClientId());
+
+	List<Product> productL = new ArrayList<Product>();
+	for (Order aux : orderList) {
+		Product p = new Product();
+		ProductDAO pDAO = new ProductDAO();
+		p = pDAO.searchById(aux.getProductId());
+		productL.add(p);
 	}
 	%>
 
@@ -82,12 +104,6 @@
 					</div></li>
 			</ul>
 
-			<form action="search" method="GET" class="form-inline my-2 my-lg-0">
-				<input class="form-control mr-sm-2" type="search"
-					placeholder="Nombre, ID o Cuit" aria-label="Search" name="search">
-				<button class="btn btn-outline-success my-2 my-sm-0" name="accion"
-					value="searchClientToCreate" type="submit">Buscar Cliente</button>
-			</form>
 			<ul class="navbar-nav mr-right">
 				<li class="nav-item dropdown"><a
 					class="nav-link dropdown-toggle" href="../sistfb/inicio/stock.html"
@@ -109,189 +125,118 @@
 	</nav>
 	<br>
 
-
 	<!--  tabla abajo -->
-	<%
-		if (request.getSession().getAttribute("clientOrder") == null) {
-	%>
-	<form method="GET" action="order">
-		<table class="table" id="testTable">
-			<thead class="thead-dark">
+
+
+	<div class="container">
+		<table class="table-borderless">
+
+			<thead>
+
 				<tr>
-					<th scope="col">Seleccionar</th>
-					<th scope="col">Nombre</th>
-					<th scope="col">Cuit</th>
-					<th scope="col">Direccion</th>
-					<th scope="col">Correo electronico</th>
+					<th scope="row"></th>
+
+					<th scope="row"></th>
+					<th scope="row"></th>
+					<th scope="row"></th>
 				</tr>
 			</thead>
 			<tbody>
-				<%
-					List<Client> listC = new ArrayList<Client>();
-
-				if (request.getSession().getAttribute("search") != null) {
-					ClientDAO cdao = new ClientDAO();
-					listC = (List<Client>) request.getSession().getAttribute("search");
-					request.getSession().removeAttribute("search");
-				} else {
-					ClientDAO cdao = new ClientDAO();
-					listC = cdao.selectAll();
-				}
-
-				for (int i = 0; i < listC.size(); i++) {
-					Client c = new Client();
-					c = listC.get(i);
-				%>
 				<tr>
-					<th scope="row">
-						<div class="form-check">
-							<input class="form-check-input" name="idClient" type="checkbox"
-								value=<%=c.getId()%> id="defaultCheck1">
-						</div>
-					</th>
+					<th>Cliente:</th>
 					<td><%=c.getName()%></td>
-					<td><%=c.getCuit()%></td>
-					<td><%=c.getAdress()%></td>
-					<td><%=c.getEmail()%></td>
-				</tr>
-
-				<%
-					}
-				%>
-				<tr>
-					<th scope="row">
-						<button class="btn btn-outline-success my-2 my-sm-0" name="accion"
-							value="clientSelect" type="submit">Seleccionar Cliente</button>
-					</th>
-					<td>
-						<button class="btn btn-outline-success my-2 my-sm-0" name="accion"
-							value="clientModify" type="submit">Modificar Cliente</button>
-					</td>
-
-
 					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<th>Direccion:</th>
+					<td><%=c.getAdress()%></td>
+					<td></td>
+					<td></td>
+				</tr>
+				<tr>
+					<th>Email:</th>
+					<td><%=c.getEmail()%></td>
 					<td></td>
 					<td></td>
 				</tr>
 			</tbody>
 		</table>
-	</form>
-	<%
-		} else {
-	%>
 
-	<form method="GET" action="order">
-		<table class="table" id="testTable">
-			<thead class="thead-dark">
+	</div>
+	<br>
+	<br>
+
+	<form action="order" method="post" class="form-inline">
+		<table class="table table-borderless">
+			<thead>
 				<tr>
 					<th scope="col">Seleccionar</th>
-					<th scope="col">sku</th>
-					<th scope="col">nombre</th>
-					<th scope="col">tipo</th>
-					<th scope="col">metros por tipo</th>
+					<th scope="col">Id de Producto</th>
+					<th scope="col">Descripcion</th>
+					<th scope="col">Tipo</th>
+					<th scope="col">Metros por unidad</th>
 					<th scope="col">Unidades</th>
-					<th scope="col">metros totales</th>
-					<th scope="col">Precio por metro</th>
-					<th scope="col">Precio total</th>
-					<th scope="col">Unidades</th>
+					<th scope="col">Precio</th>
 				</tr>
 			</thead>
 			<tbody>
-
-
 				<%
-					Product p = new Product();
-				ProductDAO pdao = new ProductDAO();
-				ResultSet rs2 = pdao.searchAll();
-				double price = 0;
-				String discountType = "";
-
-				double totalMeters = 0;
-				double totalAllMeters = 0;
-
+					double price = 0;
 				double totalPrice = 0;
-				double totalAllPrice = 0;
-
-				while (rs2.next()) {
-					p.setId(rs2.getInt("id"));
-					p.setName(rs2.getString("name"));
-					p.setPrice(rs2.getDouble("price"));
-					p.setSku(rs2.getInt("sku"));
-					p.setUnitys(rs2.getDouble("unitys"));
-					p.setType(rs2.getString("type"));
-					p.setMetersByType(rs2.getDouble("metersbytype"));
-					p.setDisponibleMeters(rs2.getDouble("disponiblemeters"));
-					p.setDiscountType(rs2.getString("discounttype"));
-
+				String discountType = "";
+				int cont = 0;
+				for (Product aux : productL) {
+					Product p = aux;
 					price = p.getPrice();
 					discountType = p.getDiscountType();
-					price = Discounter.discount(discountType, price);
-
-					totalMeters = p.getMetersByType() * p.getUnitys();
-					totalAllMeters += totalMeters;
-
-					totalPrice = price * totalMeters;
+					price = Discounter.discount(discountType, price) * o.getUnitys() * p.getMetersByType();
+					totalPrice += price;
+					p.setPrice(price);
+					price = Rounder.roundByFourZeroes(price);
 					totalPrice = Rounder.roundByFourZeroes(totalPrice);
-					totalAllPrice += totalPrice;
+					o = orderList.get(cont);
+				
 				%>
 				<tr>
 					<th scope="row">
-						<div class="form-check">
-							<input class="form-check-input" name="idProduct" type="checkbox"
-								value=<%=p.getId()%> id="defaultCheck1">
+						<div>
+							<input class="form-check-input-left" name="idProduct"
+								type="checkbox" value=<%=p.getId()%> id="defaultCheck1">
 						</div>
 					</th>
-
-					<td><%=p.getSku()%></td>
+					<td><%=p.getId()%></td>
 					<td><%=p.getName()%></td>
 					<td><%=p.getType()%></td>
-					<td><%=p.getMetersByType()%> mts</td>
-					<td><%=p.getUnitys()%></td>
-					<td><%=totalMeters%> mts</td>
-					<td><%=price%> usd</td>
-					<td><%=totalPrice%> usd </td>
-					<td>
-						<div class="form-group mx-sm-0 mb-0">
-							<label for="inputPassword2" class="sr-only">Unidades</label> <input
-								type="text" name="unitysOrder" class="form-control"
-								id="inputPassword2" placeholder="Unidades">
-						</div>
-					</td>
+					<td><%=p.getMetersByType()%></td>
+					<td><%=o.getUnitys()%></td>
+					<td><%=price%></td>
 				</tr>
 				<%
-					}
-				%>
-				<%
-					totalAllPrice = Rounder.roundByFourZeroes(totalAllPrice);
+				cont++;
+				}
 				%>
 				<tr>
-					<th scope="row">
-						<button class="btn btn-outline-success my-2 my-sm-0" name="accion"
-							value="productSelect" type="submit">Seleccionar
-							Productos</button>
-					</th>
-					<td>
-						<button class="btn btn-outline-success my-2 my-sm-0" name="accion"
-							value="productFinishAdd" type="submit">Agregar Productos</button>
-					</td>
+					<th scope="row"><button type="submit" name="accion"
+							value="deleteproducts"
+							class="btn btn-outline-success my-2 my-sm-0">Eliminar
+							Productos</button></th>
+					<td><button type="submit" name="accion"
+							value=<%="addproducts" + c.getId()%>
+							class="btn btn-outline-success my-2 my-sm-0">Agregar
+							Productos</button></td>
 					<td></td>
 					<td></td>
 					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-					<td></td>
-
+					<td><strong>TOTAL:</strong></td>
+					<td><%=totalPrice%></td>
 				</tr>
-
 			</tbody>
 		</table>
 	</form>
 
-	<%
-		}
-	%>
+
+
 	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
 		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
 		crossorigin="anonymous"></script>

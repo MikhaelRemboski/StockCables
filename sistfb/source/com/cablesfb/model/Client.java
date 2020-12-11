@@ -61,4 +61,12 @@ public class Client {
 		this.transport = transport;
 	}
 
+
+	@Override
+	public String toString() {
+		return " nombre=" + name + ", cuit=" + cuit + ", direccion=" + adress + ", email=" + email + ", transporte="
+				+ transport;
+	}
+	
+
 }

@@ -12,7 +12,7 @@ public class Connector {
 			System.out.println("Conectado correctamente");
 		} catch (Exception ex) {
 			ex.getMessage();
-			System.out.println("el error de mierda");
+			
 		}
 		return con;
 	}
@@ -23,7 +23,7 @@ public class Connector {
 			System.out.println("Conectado correctamente");
 		} catch (Exception ex) {
 			ex.getMessage();
-			System.out.println("el error de mierda");
+		
 		}
 		
 		return con;
@@ -36,7 +36,7 @@ public class Connector {
 			System.out.println("Conectado correctamente");
 		} catch (Exception ex) {
 			ex.getMessage();
-			System.out.println("el error de mierda");
+			
 		}
 		
 		return con;

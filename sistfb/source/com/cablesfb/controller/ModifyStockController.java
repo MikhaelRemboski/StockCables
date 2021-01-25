@@ -39,15 +39,7 @@ public class ModifyStockController extends HttpServlet {
 			price = Double.parseDouble(request.getParameter("price"));
 			discountType = request.getParameter("discounttype");
 			type = request.getParameter("type");
-			 if(request.getParameter("sku") == null || name == null ||
-					 request.getParameter("metersbytype") == null ||  
-					 request.getParameter("unitys")== null || 
-					 request.getParameter("price") == null 
-					 || discountType == null || type == null) {
-					response.getWriter().append("<h1>BOLUDO!!!!!! COMPLETA BIEN!!!! YA  TE EXPLIQUE COMO SE CARGAN LOS PRODUCTOS.<h1>"
-							+ "<a class=\"btn btn-primary\" href=\"../sistfb/modifyproduct.jsp\" role=\"button\">intentar de nuevo</a");				 
-				 
-			 }
+	
 			Product p = new Product();
 			ProductDAO pdao = new ProductDAO();
 			p.setId(id);
@@ -62,9 +54,7 @@ public class ModifyStockController extends HttpServlet {
 			request.getSession().setAttribute("exito", "exito");
 			request.getRequestDispatcher("/modifyproduct.jsp").forward(request, response);
 			System.out.println(p.getName());
-		} catch (Exception ex) {
-			response.getWriter().append("<h1>BOLUDO!!!!!! COMPLETA BIEN!!!! YA  TE EXPLIQUE COMO SE CARGAN LOS PRODUCTOS.<h1>"
-					+ "<a class=\"btn btn-primary\" href=\"../sistfb/modifyproduct.jsp\" role=\"button\">intentar de nuevo</a");				 
+		} catch (Exception ex) {			 
 		 
 			System.out.println(ex.getMessage());
 		}

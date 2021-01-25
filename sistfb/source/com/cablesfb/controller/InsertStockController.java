@@ -50,8 +50,6 @@ public class InsertStockController extends HttpServlet {
 			 request.getSession().setAttribute("exito", "exito");
 			 request.getRequestDispatcher("/addproduct.jsp").forward(request, response);
 		} catch (Exception ex) {
-			response.getWriter().append("<h1>BOLUDO!!!!!! COMPLETA BIEN!!!! YA  TE EXPLIQUE COMO SE CARGAN LOS PRODUCTOS.<h1>"
-					+ "<a class=\"btn btn-primary\" href=\"../sistfb/addproduct.jsp\" role=\"button\">intentar de nuevo</a");
 			System.out.println(ex.getMessage());
 		}
 		
